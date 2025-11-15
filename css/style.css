@@ -4,10 +4,6 @@ html, body{
 
 body{
     background: linear-gradient(to bottom right, #E2EAFC, #B6CCFE);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
 }
 
 .container{
@@ -166,4 +162,11 @@ button:hover::before {
 .submit::after {
   display: none !important;
   content: none !important;
+}
+
+.formContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }

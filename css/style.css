@@ -193,3 +193,23 @@ button:hover::before {
   align-items: center;
   min-height: 100vh;
 }
+
+.formTitle {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: #000;
+}
+
+.signupLink {
+  color: #6B7280;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+.signupLink a {
+  color: #ABC4FF;
+  text-decoration: underline;
+}

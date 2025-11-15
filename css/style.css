@@ -12,6 +12,29 @@ body{
     gap: 1rem;
 }
 
+.mainTitle{
+  color: #ABC4FF;
+  font-size: 80px;
+  font-weight: 600;
+  text-align: left;
+  margin-top: 8%;
+  margin-left: 20%;
+  align-items: left;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 button {
  outline: none;
  cursor: pointer;

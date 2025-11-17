@@ -1,44 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../css/style.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memoa | Register</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
-    <div class="formContainer">
-        <form class="form">
-    <p class="title">Register</p>
-    <p class="message">Sign up now and get full access to our app.</p>
-        <div class="flex">
-        <label>
-            <input required="" placeholder="" type="text" class="input">
-            <span>First Name</span>
-        </label>
+<body class="auth-page">
+  <div class="formContainer">
+    <div class="form-card">
+      <h1>Register</h1>
+      <p>Already a member? <a href="../html/login.html">Log in</a></p>
 
-        <label>
-            <input required="" placeholder="" type="text" class="input">
-            <span>Last Name</span>
+      <form id="registerForm">
+        <label for="registerName">
+          Name
+          <input id="registerName" name="name" type="text" placeholder="Your name" required>
         </label>
-    </div>  
-            
-    <label>
-        <input required="" placeholder="" type="email" class="input">
-        <span>Email</span>
-    </label> 
-        
-    <label>
-        <input required="" placeholder="" type="password" class="input">
-        <span>Password</span>
-    </label>
-    <label>
-        <input required="" placeholder="" type="password" class="input">
-        <span>Confirm password</span>
-    </label>
-    <button class="submit">Submit</button>
-    <p class="signin">Already have an account? <a href="../html/login.html">Log in</a> </p>
-</form>
+        <label for="registerEmail">
+          Email
+          <input id="registerEmail" name="email" type="email" placeholder="mail@example.com" required>
+        </label>
+        <label for="registerPassword">
+          Password
+          <input id="registerPassword" name="password" type="password" placeholder="••••••••" required>
+        </label>
+        <button type="submit" class="btn btn--primary">Sign up</button>
+      </form>
+
+      <p class="form-footer">By creating an account you agree to our privacy policy.</p>
     </div>
+  </div>
+
+  <script type="module" src="../js/auth.js"></script>
 </body>
 </html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memoa | My notes</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-page">
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="sidebar__logo">Memoa</div>
+      <nav>
+        <a href="#" class="active">Notes</a>
+        <a href="#">To-do</a>
+        <a href="#">Favourites</a>
+      </nav>
+      <div class="sidebar__account" id="sidebarAccount">My account</div>
+    </aside>
+
+    <section class="workspace">
+      <div class="workspace__header">
+        <h2 class="workspace__title">My notes</h2>
+        <button id="newNoteBtn" class="btn btn--new-note">+ New note</button>
+      </div>
+
+      <div id="notesGrid" class="notes-grid">
+        <!-- Notes injected via JS -->
+      </div>
+
+      <form id="noteForm" class="form-card hidden" style="max-width:480px;">
+        <h2 style="font-size:1.75rem;margin:0;">New note</h2>
+        <label for="noteContent">
+          Note
+          <textarea id="noteContent" rows="5" placeholder="Write something..." required></textarea>
+        </label>
+        <div class="note-card__actions" style="justify-content:flex-end;">
+          <button type="button" class="btn btn--secondary" id="cancelNoteBtn">Cancel</button>
+          <button type="submit" class="btn btn--primary">Save</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>
+

@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../css/style.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memoa | Log in</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
-<body>
-        <div class="formContainer">
-            <form class="form">
-       <p class="title">Sign in to your account</p>
-            <label>
-        <input required="" placeholder="" type="email" class="input">
-        <span>Email</span>
-    </label> 
-      <label>
-        <input required="" placeholder="" type="password" class="input">
-        <span>Password</span>
-    </label>
-         <button type="submit" class="submit">
-        Log in
-      </button>
+<body class="auth-page">
+  <div class="formContainer">
+    <div class="form-card">
+      <h1>Log in</h1>
+      <p>New here? <a href="../html/register.html">Create an account</a></p>
 
-      <p class="signupLink">
-        No account?
-        <a href="../html/register.html">Register</a>
-      </p>
-   </form>
-        </div>
+      <form id="loginForm">
+        <label for="loginEmail">
+          Email
+          <input id="loginEmail" name="email" type="email" placeholder="mail@example.com" required>
+        </label>
+        <label for="loginPassword">
+          Password
+          <input id="loginPassword" name="password" type="password" placeholder="••••••••" required>
+        </label>
+        <button type="submit" class="btn btn--primary">Sign in</button>
+      </form>
+
+      <p class="form-footer">Need help? Contact us at support@memoa.app</p>
+    </div>
+  </div>
+
+  <script type="module" src="../js/auth.js"></script>
 </body>
 </html>

@@ -30,3 +30,13 @@ Open `http://127.0.0.1:5500/index.html` in your browser.
 
 > The previous Flask + SQLite backend is kept under `/server`, but it is no
 > longer required for the default flow.
+
+## Assistant & checklists
+
+- On `dashboard.html` the Memoa assistant can summarize notes, create structure
+  drafts, turn items into checklists, or sort notes when you ask (e.g. “sort
+  notes”, “create checklist”).
+- Checklist notes contain lines starting with `☐` or `☑`. Ticking them in the UI
+  updates the stored content immediately, so the state persists on refresh.
+- Collapse the assistant panel with the round `+` / `–` button to focus on the
+  notes grid.

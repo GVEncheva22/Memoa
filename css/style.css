@@ -396,6 +396,95 @@ button:hover,
   min-height: 80px;
 }
 
+.favourites-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.favourites-form {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 20px 40px rgba(118, 159, 255, 0.2);
+}
+
+.favourites-form input,
+.favourites-form textarea,
+.favourites-form select {
+  border-radius: 14px;
+  border: 1px solid rgba(31, 31, 31, 0.15);
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.favourites-form__actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.favourites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.favourite-card {
+  border-radius: 24px;
+  padding: 1.25rem;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+}
+
+.favourite-card h4 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.favourite-card__tag {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  opacity: 0.7;
+}
+
+.favourite-card__actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.favourite-card button {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+}
+
+.favourite-card.sky {
+  background: linear-gradient(135deg, #dbe6ff, #aecbff);
+}
+
+.favourite-card.lavender {
+  background: linear-gradient(135deg, #e9dbff, #c5b0ff);
+}
+
+.favourite-card.peach {
+  background: linear-gradient(135deg, #ffe3d7, #ffc3a9);
+}
+
+.favourite-card.mint {
+  background: linear-gradient(135deg, #dff9e5, #b6f0cc);
+}
+
 .workspace__header {
   display: flex;
   justify-content: space-between;

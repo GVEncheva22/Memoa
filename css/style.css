@@ -285,6 +285,19 @@ button:hover,
   gap: 2rem;
 }
 
+.workspace__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.notes-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
 .workspace__header {
   display: flex;
   justify-content: space-between;
@@ -369,5 +382,9 @@ button:hover,
 
   .workspace {
     padding: 2rem;
+  }
+
+  .workspace__body {
+    grid-template-columns: 1fr;
   }
 }

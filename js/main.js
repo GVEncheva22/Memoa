@@ -258,6 +258,22 @@ const initHelloPage = () => {
   });
 };
 
+const parseChecklist = (content) => {
+  const lines = content.split('\n');
+  const items = [];
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('☐') || trimmed.startsWith('☑')) {
+      items.push({
+        index,
+        checked: trimmed.startsWith('☑'),
+        text: trimmed.slice(1).trim(),
+      });
+    }
+  });
+  return { lines, items };
+};
+
 const renderNotes = (notes) => {
   const notesGrid = document.getElementById('notesGrid');
   if (!notesGrid) return;
@@ -271,12 +287,35 @@ const renderNotes = (notes) => {
   notes.forEach((note) => {
     const card = document.createElement('article');
     card.className = 'note-card';
-    card.innerHTML = `
-      <textarea readonly>${note.content}</textarea>
-      <div class="note-card__actions">
-        <button class="btn btn--secondary" data-id="${note.id}" data-action="delete">Delete</button>
-      </div>
-    `;
+    card.dataset.noteId = note.id;
+
+    const { items } = parseChecklist(note.content);
+    if (items.length) {
+      const itemsMarkup = items
+        .map(
+          (item) => `
+          <label class="checklist-item ${item.checked ? 'checklist-item--done' : ''}">
+            <input type="checkbox" data-line-index="${item.index}" ${item.checked ? 'checked' : ''}>
+            <span>${item.text}</span>
+          </label>`
+        )
+        .join('');
+      card.innerHTML = `
+        <div class="checklist">
+          ${itemsMarkup}
+        </div>
+        <div class="note-card__actions">
+          <button class="btn btn--secondary" data-id="${note.id}" data-action="delete">Delete</button>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <textarea readonly>${note.content}</textarea>
+        <div class="note-card__actions">
+          <button class="btn btn--secondary" data-id="${note.id}" data-action="delete">Delete</button>
+        </div>
+      `;
+    }
     notesGrid.appendChild(card);
   });
 };

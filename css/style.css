@@ -355,6 +355,105 @@ button:hover,
   color: var(--text-light);
 }
 
+.assistant-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 28px;
+  padding: 1.75rem;
+  box-shadow: 0 25px 60px rgba(64, 88, 145, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.assistant-panel__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.assistant-panel__eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  margin: 0;
+  color: rgba(31, 31, 31, 0.5);
+}
+
+.assistant-panel h3 {
+  margin: 0.2rem 0 0;
+  font-size: 1.4rem;
+  color: #5f6fd6;
+}
+
+.assistant-toggle {
+  border: none;
+  background: rgba(118, 159, 255, 0.2);
+  color: #6a7ad8;
+  font-size: 1.4rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.assistant-panel.assistant-panel--collapsed {
+  padding: 1rem 1.25rem;
+  gap: 0.5rem;
+}
+
+.assistant-panel--collapsed h3 {
+  margin: 0;
+}
+
+.assistant-panel--collapsed .assistant-messages,
+.assistant-panel--collapsed .assistant-form,
+.assistant-panel--collapsed #assistantOrganizeBtn {
+  display: none;
+}
+
+.assistant-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.assistant-message {
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  background: rgba(118, 159, 255, 0.15);
+  color: #394263;
+}
+
+.assistant-message--user {
+  background: var(--accent-secondary);
+  color: var(--text-light);
+  align-self: flex-end;
+}
+
+.assistant-form {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.assistant-form input {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid rgba(31, 31, 31, 0.1);
+  padding: 0.85rem 1.2rem;
+  font-size: 1rem;
+}
+
+.assistant-form input:focus {
+  outline: 2px solid rgba(118, 159, 255, 0.4);
+  border-color: transparent;
+}
+
 .hidden {
   display: none !important;
 }
@@ -386,5 +485,10 @@ button:hover,
 
   .workspace__body {
     grid-template-columns: 1fr;
+  }
+
+  .assistant-panel {
+    position: sticky;
+    top: 1rem;
   }
 }

@@ -60,22 +60,83 @@ const addChatMessage = (text, role = 'bot') => {
   container.scrollTop = container.scrollHeight;
 };
 
+const analyzeNotes = (notes) => {
+  const keywords = {
+    action: ['todo', 'task', 'follow', 'deadline', 'fix', 'домашна', 'домашно', 'assignment', 'разпиши'],
+    idea: ['idea', 'concept', 'brainstorm', 'dream', 'plan', 'идея', 'план'],
+    reference: ['link', 'resource', 'note', 'info', 'read', 'article', 'прегледай', 'прочети', 'reference'],
+  };
+
+  const groups = {
+    Action: [],
+    Ideas: [],
+    Reference: [],
+    General: [],
+  };
+
+  notes.forEach((note, index) => {
+    const snippet = note.content.trim().slice(0, 120);
+    const lower = snippet.toLowerCase();
+
+    if (keywords.action.some((word) => lower.includes(word))) {
+      groups.Action.push({ index: index + 1, snippet });
+    } else if (keywords.idea.some((word) => lower.includes(word))) {
+      groups.Ideas.push({ index: index + 1, snippet });
+    } else if (keywords.reference.some((word) => lower.includes(word))) {
+      groups.Reference.push({ index: index + 1, snippet });
+    } else {
+      groups.General.push({ index: index + 1, snippet });
+    }
+  });
+
+  const summary = Object.entries(groups)
+    .filter(([, items]) => items.length)
+    .map(([label, items]) => {
+      const entries = items
+        .map((item) => `• Note ${item.index}: ${item.snippet}${item.snippet.length === 120 ? '…' : ''}`)
+        .join('\n');
+      return `${label} (${items.length})\n${entries}`;
+    })
+    .join('\n\n');
+
+  return { count: notes.length, groups, summary };
+};
+
 const randomFrom = (list) => list[Math.floor(Math.random() * list.length)];
 
-const generateStructureResponse = (prompt, notes) => {
-  if (!notes.length) {
+const generateStructureResponse = (prompt, analysis) => {
+  if (!analysis.count) {
     return randomFrom([
       'Все още нямаш бележки. Добави първата и ще ти помогна да я организирам.',
       'Нищо за подреждане засега — напиши идея или задача и веднага ще я структурираме.',
     ]);
   }
 
-  const preview = notes
-    .slice(0, 3)
-    .map((note, index) => `• Note ${index + 1}: ${note.content.split('\n')[0]}`)
-    .join('\n');
+  const introVariants = [
+    `Имаш ${analysis.count} бележки. Нека ги подредим така:`,
+    `Разгледах ${analysis.count} записа и ето структурата, която виждам:`,
+    `Базирам се на текущите ${analysis.count} бележки и предлагам следното:`,
+  ];
 
-  return `Имаш ${notes.length} бележки. Ето как изглеждат първите:\n${preview}\n\nКажи ми ако искаш да ги разделим по категории или да ги пренапиша като чеклист.`;
+  const summaryVariants = [
+    'Ако искаш ще подготвя и списък със следващи стъпки.',
+    'Мога да помогна и с разписване на приоритети, ако кажеш.',
+    'Кажи ми ако искаш да ги пренапиша като план или чеклист.',
+  ];
+
+  const focusVariants = [
+    'Виждам, че питаш за резюме – добавих акцент върху важните теми.',
+    'Спомена “задачи”, затова оставих Action секцията първа.',
+    'Звучи като търсиш структура за идеи; добавих я отделно.',
+  ];
+
+  const promptLower = prompt.toLowerCase();
+  const extra =
+    promptLower.includes('summary') || promptLower.includes('резюме')
+      ? randomFrom(focusVariants)
+      : randomFrom(summaryVariants);
+
+  return `${randomFrom(introVariants)}\n\n${analysis.summary}\n\n${extra}`;
 };
 
 const initAssistantPanel = (notesProvider) => {
@@ -96,7 +157,8 @@ const initAssistantPanel = (notesProvider) => {
   const handlePrompt = (prompt) => {
     const notes = typeof notesProvider === 'function' ? notesProvider() : [];
     addChatMessage(prompt, 'user');
-    const response = generateStructureResponse(prompt, notes);
+    const analysis = analyzeNotes(notes);
+    const response = generateStructureResponse(prompt, analysis);
     setTimeout(() => addChatMessage(response, 'bot'), 200);
   };
 

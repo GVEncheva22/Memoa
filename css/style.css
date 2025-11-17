@@ -343,6 +343,37 @@ button:hover,
   outline: none;
 }
 
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.checklist-item input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-secondary);
+}
+
+.checklist-item span {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.checklist-item--done span {
+  text-decoration: line-through;
+  opacity: 0.65;
+}
+
 .note-card__actions {
   margin-top: auto;
   display: flex;

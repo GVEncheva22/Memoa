@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memoa | Favourites</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-page">
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="sidebar__logo">Memoa</div>
+      <nav>
+        <a href="../html/dashboard.html">Notes</a>
+        <a href="../html/todo.html">To-do</a>
+        <a href="../html/favourites.html" class="active">Favourites</a>
+      </nav>
+      <div class="sidebar__account" id="sidebarAccount">My account</div>
+    </aside>
+
+    <section class="workspace">
+      <div class="workspace__header">
+        <h2 class="workspace__title">Favourite snippets</h2>
+      </div>
+
+      <div class="favourites-wrapper">
+        <form id="favouriteForm" class="favourites-form">
+          <input id="favouriteTitle" type="text" placeholder="Title" required>
+          <input id="favouriteTag" type="text" placeholder="Tag e.g. design, idea" required>
+          <textarea id="favouriteContent" rows="3" placeholder="Add a highlight, link or snippet..." required></textarea>
+          <div class="favourites-form__actions">
+            <select id="favouriteColor">
+              <option value="sky">Sky</option>
+              <option value="lavender">Lavender</option>
+              <option value="peach">Peach</option>
+              <option value="mint">Mint</option>
+            </select>
+            <button class="btn btn--primary" type="submit">Save favourite</button>
+          </div>
+        </form>
+
+        <div id="favouritesGrid" class="favourites-grid">
+          <!-- Favourite cards injected via JS -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="../js/favourites.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memoa | Favourites</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-page">
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="sidebar__logo">Memoa</div>
+      <nav>
+        <a href="../html/dashboard.html">Notes</a>
+        <a href="../html/todo.html">To-do</a>
+        <a href="../html/favourites.html" class="active">Favourites</a>
+      </nav>
+      <div class="sidebar__account" id="sidebarAccount">My account</div>
+    </aside>
+
+    <section class="workspace">
+      <div class="workspace__header">
+        <h2 class="workspace__title">Favourite snippets</h2>
+      </div>
+
+      <div class="favourites-wrapper">
+        <form id="favouriteForm" class="favourites-form">
+          <input id="favouriteTitle" type="text" placeholder="Title" required>
+          <input id="favouriteTag" type="text" placeholder="Tag e.g. design, idea" required>
+          <textarea id="favouriteContent" rows="3" placeholder="Add a highlight, link or snippet..." required></textarea>
+          <div class="favourites-form__actions">
+            <select id="favouriteColor">
+              <option value="sky">Sky</option>
+              <option value="lavender">Lavender</option>
+              <option value="peach">Peach</option>
+              <option value="mint">Mint</option>
+            </select>
+            <button class="btn btn--primary" type="submit">Save favourite</button>
+          </div>
+        </form>
+
+        <div id="favouritesGrid" class="favourites-grid">
+          <!-- Favourite cards injected via JS -->
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="../js/favourites.js"></script>
+</body>
+</html>
+

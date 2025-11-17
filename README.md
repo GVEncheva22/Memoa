@@ -1,32 +1,32 @@
 # Memoa
 
-Prototype of the Memoa UI with a Python + SQLite backend for persisting users
-and notes.
+Prototype of the Memoa UI. The current demo is 100% front-end: registrations,
+logins, and notes are stored in `localStorage`, so you only need a static file
+server to run it.
 
 ## Getting started
 
-### 1. Backend (Flask + SQLite)
+### Serve the HTML files
 
+Pick one of the options below to serve `/Users/gabriela/Documents/Memoa/html`
+through `http://localhost` (the pages must not be opened via `file://`).
+
+#### Option A – VS Code Live Server
+1. Open the folder in VS Code.
+2. Install the “Live Server” extension (Ritwick Dey).
+3. Right-click `html/index.html` → “Open with Live Server”.
+
+#### Option B – Python http.server
 ```bash
-cd /Users/gabriela/Documents/Memoa/server
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python app.py
+cd /Users/gabriela/Documents/Memoa/html
+python3 -m http.server 5500
 ```
+Open `http://127.0.0.1:5500/index.html` in your browser.
 
-This launches the API on `http://127.0.0.1:5000`.
+### Data location
+- Registered users are stored in `localStorage` under the `memoaUsers` key.
+- The active session is `memoaUser`.
+- Notes are stored per user under `memoaNotes`.
 
-### 2. Frontend (static pages)
-
-Open the HTML files in `/Users/gabriela/Documents/Memoa/html` with a live
-server (for example using VS Code “Live Server”) so that fetch requests work as
-expected.
-
-## API
-
-- `POST /api/register` – body `{ name, email, password }`
-- `POST /api/login` – body `{ email, password }`
-- `GET /api/notes?userId=ID`
-- `POST /api/notes` – body `{ userId, content }`
-- `DELETE /api/notes/:noteId`
+> The previous Flask + SQLite backend is kept under `/server`, but it is no
+> longer required for the default flow.

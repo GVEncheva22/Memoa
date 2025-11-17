@@ -48,3 +48,11 @@ Open `http://127.0.0.1:5500/index.html` in your browser.
 - Add sticky notes from the textarea above the board; drag them between columns
   or delete when finished.
 - Board data is saved per user in `localStorage` under `memoaBoard-<userId>`.
+
+## Favourites hub
+
+- `html/favourites.html` lets you store highlighted snippets/links with title,
+  tag and colour theme (sky, lavender, peach, mint).
+- Items render as “sticky” gradient cards; click Remove to delete.
+- Data is stored in `localStorage` (`memoaFavourites-<userId>`), so every user
+  has their own collection.

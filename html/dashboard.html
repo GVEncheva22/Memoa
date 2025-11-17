@@ -42,6 +42,37 @@
             </div>
           </form>
         </div>
+        <aside class="assistant-panel" id="assistantPanel">
+          <div class="assistant-panel__header">
+            <div>
+              <p class="assistant-panel__eyebrow">Memoa Assistant</p>
+              <h3>Need a structure?</h3>
+            </div>
+            <button id="assistantOrganizeBtn" class="btn btn--secondary" type="button">
+              Organize notes
+            </button>
+            <button id="assistantToggleBtn" class="assistant-toggle" type="button" aria-label="Toggle assistant">
+              –
+            </button>
+          </div>
+
+          <div id="assistantMessages" class="assistant-messages">
+            <div class="assistant-message assistant-message--bot">
+              Hi! Ask me anything or tap “Organize notes” and I’ll propose a clean structure.
+            </div>
+          </div>
+
+          <form id="assistantForm" class="assistant-form">
+            <input
+              id="assistantInput"
+              type="text"
+              placeholder="e.g. Help me group ideas and todos"
+              autocomplete="off"
+              required
+            >
+            <button class="btn btn--primary" type="submit">Send</button>
+          </form>
+        </aside>
       </div>
     </section>
   </div>

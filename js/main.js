@@ -1,7 +1,12 @@
-const API_BASE = 'http://127.0.0.1:5000/api';
 const USER_STORAGE_KEY = 'memoaUser';
+const NOTES_KEY = 'memoaNotes';
 
-function getStoredUser() {
+const generateId = () =>
+  typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+
+const getStoredUser = () => {
   const raw = localStorage.getItem(USER_STORAGE_KEY);
   if (!raw) return null;
   try {
@@ -10,34 +15,42 @@ function getStoredUser() {
     console.error('Failed to parse user from storage', error);
     return null;
   }
-}
+};
 
-function requireAuth() {
+const requireAuth = () => {
   const user = getStoredUser();
   if (!user) {
     window.location.href = './login.html';
     return null;
   }
   return user;
-}
+};
 
-async function request(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    ...options,
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || 'Something went wrong');
+const getNotesStore = () => {
+  try {
+    return JSON.parse(localStorage.getItem(NOTES_KEY)) || {};
+  } catch (error) {
+    console.error('Failed to parse notes', error);
+    return {};
   }
+};
 
-  return response.json();
-}
+const saveNotesStore = (store) => {
+  localStorage.setItem(NOTES_KEY, JSON.stringify(store));
+};
 
-function initHelloPage() {
+const getUserNotes = (userId) => {
+  const store = getNotesStore();
+  return store[userId] || [];
+};
+
+const saveUserNotes = (userId, notes) => {
+  const store = getNotesStore();
+  store[userId] = notes;
+  saveNotesStore(store);
+};
+
+const initHelloPage = () => {
   const helloTitle = document.getElementById('helloTitle');
   const proceedButton = document.getElementById('proceedToNotes');
   if (!helloTitle || !proceedButton) return;
@@ -49,9 +62,9 @@ function initHelloPage() {
   proceedButton.addEventListener('click', () => {
     window.location.href = './dashboard.html';
   });
-}
+};
 
-function renderNotes(notes) {
+const renderNotes = (notes) => {
   const notesGrid = document.getElementById('notesGrid');
   if (!notesGrid) return;
   notesGrid.innerHTML = '';
@@ -72,27 +85,9 @@ function renderNotes(notes) {
     `;
     notesGrid.appendChild(card);
   });
-}
+};
 
-async function fetchNotes(userId) {
-  const result = await request(`/notes?userId=${encodeURIComponent(userId)}`);
-  return result.notes;
-}
-
-async function handleDeleteNote(event) {
-  const target = event.target;
-  if (!(target instanceof HTMLElement)) return;
-  if (target.dataset.action !== 'delete') return;
-  const noteId = target.dataset.id;
-  if (!noteId) return;
-
-  if (!confirm('Delete this note?')) return;
-
-  await request(`/notes/${noteId}`, { method: 'DELETE' });
-  initDashboardPage(true);
-}
-
-async function initDashboardPage(forceRefresh = false) {
+const initDashboardPage = () => {
   const notesGrid = document.getElementById('notesGrid');
   const noteForm = document.getElementById('noteForm');
   const noteContent = document.getElementById('noteContent');
@@ -107,20 +102,26 @@ async function initDashboardPage(forceRefresh = false) {
 
   sidebarAccount.textContent = user.name;
 
-  const loadNotes = async () => {
-    const notes = await fetchNotes(user.id);
+  const loadNotes = () => {
+    const notes = getUserNotes(user.id);
     renderNotes(notes);
   };
 
-  if (forceRefresh) {
-    await loadNotes();
-    return;
-  }
+  loadNotes();
 
-  await loadNotes();
+  notesGrid.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    if (target.dataset.action !== 'delete') return;
+    const noteId = target.dataset.id;
+    if (!noteId) return;
 
-  notesGrid.removeEventListener('click', handleDeleteNote);
-  notesGrid.addEventListener('click', handleDeleteNote);
+    if (!confirm('Delete this note?')) return;
+
+    const notes = getUserNotes(user.id).filter((note) => note.id !== noteId);
+    saveUserNotes(user.id, notes);
+    loadNotes();
+  });
 
   const toggleForm = (show) => {
     noteForm.classList.toggle('hidden', !show);
@@ -134,7 +135,7 @@ async function initDashboardPage(forceRefresh = false) {
   newNoteBtn.addEventListener('click', () => toggleForm(true));
   cancelNoteBtn.addEventListener('click', () => toggleForm(false));
 
-  noteForm.addEventListener('submit', async (event) => {
+  noteForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const content = noteContent.value.trim();
     if (!content) {
@@ -142,18 +143,19 @@ async function initDashboardPage(forceRefresh = false) {
       return;
     }
 
-    await request('/notes', {
-      method: 'POST',
-      body: JSON.stringify({
-        userId: user.id,
-        content,
-      }),
-    });
+    const notes = getUserNotes(user.id);
+    const note = {
+      id: generateId(),
+      content,
+      createdAt: new Date().toISOString(),
+    };
 
+    notes.unshift(note);
+    saveUserNotes(user.id, notes);
     toggleForm(false);
-    await loadNotes();
+    loadNotes();
   });
-}
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   initHelloPage();

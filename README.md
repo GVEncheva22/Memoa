@@ -40,3 +40,11 @@ Open `http://127.0.0.1:5500/index.html` in your browser.
   updates the stored content immediately, so the state persists on refresh.
 - Collapse the assistant panel with the round `+` / `–` button to focus on the
   notes grid.
+
+## Kanban to-do board
+
+- Open `html/todo.html` (sidebar → To-do) to access a three-column board:
+  `To do`, `In process`, `Done`.
+- Add sticky notes from the textarea above the board; drag them between columns
+  or delete when finished.
+- Board data is saved per user in `localStorage` under `memoaBoard-<userId>`.

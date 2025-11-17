@@ -1,80 +1,102 @@
-const API_BASE = 'http://127.0.0.1:5000/api';
+const USERS_KEY = 'memoaUsers';
 const USER_STORAGE_KEY = 'memoaUser';
 
-function saveUserSession(user) {
-  localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
-}
+const generateId = () =>
+  typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `user-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 
-async function request(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    ...options,
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || 'Something went wrong');
+const getUsers = () => {
+  try {
+    return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+  } catch (error) {
+    console.error('Failed to parse stored users', error);
+    return [];
   }
+};
 
-  return response.json();
-}
+const saveUsers = (users) => {
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+};
 
-function initRegisterForm() {
+const saveUserSession = (user) => {
+  localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+};
+
+const createSessionFromUser = (user) => {
+  saveUserSession({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  });
+  window.location.href = './hello.html';
+};
+
+const initRegisterForm = () => {
   const registerForm = document.getElementById('registerForm');
   if (!registerForm) return;
 
-  registerForm.addEventListener('submit', async (event) => {
+  registerForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const formData = new FormData(registerForm);
-    const payload = {
-      name: formData.get('name').trim(),
-      email: formData.get('email').trim(),
-      password: formData.get('password'),
+    const name = formData.get('name').trim();
+    const email = formData.get('email').trim().toLowerCase();
+    const password = formData.get('password');
+
+    if (!name || !email || !password) {
+      alert('Please fill all fields.');
+      return;
+    }
+
+    const users = getUsers();
+    const emailExists = users.some((user) => user.email === email);
+    if (emailExists) {
+      alert('This email is already registered. Try logging in.');
+      return;
+    }
+
+    const newUser = {
+      id: generateId(),
+      name,
+      email,
+      password,
+      createdAt: new Date().toISOString(),
     };
 
-    try {
-      const result = await request('/register', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
-
-      saveUserSession(result.user);
-      window.location.href = './hello.html';
-    } catch (error) {
-      alert(error.message);
-    }
+    users.push(newUser);
+    saveUsers(users);
+    createSessionFromUser(newUser);
   });
-}
+};
 
-function initLoginForm() {
+const initLoginForm = () => {
   const loginForm = document.getElementById('loginForm');
   if (!loginForm) return;
 
-  loginForm.addEventListener('submit', async (event) => {
+  loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const formData = new FormData(loginForm);
-    const payload = {
-      email: formData.get('email').trim(),
-      password: formData.get('password'),
-    };
+    const email = formData.get('email').trim().toLowerCase();
+    const password = formData.get('password');
 
-    try {
-      const result = await request('/login', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
-
-      saveUserSession(result.user);
-      window.location.href = './hello.html';
-    } catch (error) {
-      alert(error.message);
+    if (!email || !password) {
+      alert('Please fill all fields.');
+      return;
     }
+
+    const users = getUsers();
+    const user = users.find((entry) => entry.email === email && entry.password === password);
+
+    if (!user) {
+      alert('Invalid email or password. Try again.');
+      return;
+    }
+
+    createSessionFromUser(user);
   });
-}
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   initRegisterForm();

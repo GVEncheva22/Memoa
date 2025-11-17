@@ -50,6 +50,67 @@ const saveUserNotes = (userId, notes) => {
   saveNotesStore(store);
 };
 
+const addChatMessage = (text, role = 'bot') => {
+  const container = document.getElementById('assistantMessages');
+  if (!container) return;
+  const message = document.createElement('div');
+  message.className = `assistant-message assistant-message--${role}`;
+  message.textContent = text;
+  container.appendChild(message);
+  container.scrollTop = container.scrollHeight;
+};
+
+const randomFrom = (list) => list[Math.floor(Math.random() * list.length)];
+
+const generateStructureResponse = (prompt, notes) => {
+  if (!notes.length) {
+    return randomFrom([
+      'Все още нямаш бележки. Добави първата и ще ти помогна да я организирам.',
+      'Нищо за подреждане засега — напиши идея или задача и веднага ще я структурираме.',
+    ]);
+  }
+
+  const preview = notes
+    .slice(0, 3)
+    .map((note, index) => `• Note ${index + 1}: ${note.content.split('\n')[0]}`)
+    .join('\n');
+
+  return `Имаш ${notes.length} бележки. Ето как изглеждат първите:\n${preview}\n\nКажи ми ако искаш да ги разделим по категории или да ги пренапиша като чеклист.`;
+};
+
+const initAssistantPanel = (notesProvider) => {
+  const assistantForm = document.getElementById('assistantForm');
+  const assistantInput = document.getElementById('assistantInput');
+  const organizeBtn = document.getElementById('assistantOrganizeBtn');
+  const toggleBtn = document.getElementById('assistantToggleBtn');
+  const panel = document.getElementById('assistantPanel');
+
+  if (!assistantForm || !assistantInput || !organizeBtn || !toggleBtn || !panel) return;
+
+  toggleBtn.addEventListener('click', () => {
+    const collapsed = panel.classList.toggle('assistant-panel--collapsed');
+    toggleBtn.textContent = collapsed ? '+' : '–';
+    toggleBtn.setAttribute('aria-label', collapsed ? 'Expand assistant' : 'Collapse assistant');
+  });
+
+  const handlePrompt = (prompt) => {
+    const notes = typeof notesProvider === 'function' ? notesProvider() : [];
+    addChatMessage(prompt, 'user');
+    const response = generateStructureResponse(prompt, notes);
+    setTimeout(() => addChatMessage(response, 'bot'), 200);
+  };
+
+  assistantForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const prompt = assistantInput.value.trim();
+    if (!prompt) return;
+    assistantInput.value = '';
+    handlePrompt(prompt);
+  });
+
+  organizeBtn.addEventListener('click', () => handlePrompt('Organize my notes'));
+};
+
 const initHelloPage = () => {
   const helloTitle = document.getElementById('helloTitle');
   const proceedButton = document.getElementById('proceedToNotes');
@@ -155,6 +216,8 @@ const initDashboardPage = () => {
     toggleForm(false);
     loadNotes();
   });
+
+  initAssistantPanel(() => getUserNotes(user.id));
 };
 
 document.addEventListener('DOMContentLoaded', () => {

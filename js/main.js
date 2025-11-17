@@ -139,7 +139,74 @@ const generateStructureResponse = (prompt, analysis) => {
   return `${randomFrom(introVariants)}\n\n${analysis.summary}\n\n${extra}`;
 };
 
-const initAssistantPanel = (notesProvider) => {
+const applyAssistantActions = (prompt, notes, setNotes, analysis) => {
+  const lower = prompt.toLowerCase();
+  const responses = [];
+  let updatedNotes = [...notes];
+  let changed = false;
+
+  const matches = (keywords) => keywords.some((keyword) => lower.includes(keyword));
+
+  if (matches(['create', 'generate', 'structure note', 'разпиши', 'нова бележк', 'add structure'])) {
+    if (analysis.count) {
+      const structuredNote = {
+        id: generateId(),
+        content: `Структура ${new Date().toLocaleString()}:\n\n${analysis.summary}`,
+        createdAt: new Date().toISOString(),
+      };
+      updatedNotes = [...updatedNotes, structuredNote];
+      changed = true;
+      responses.push('Добавих нова бележка с предложената структура.');
+    }
+  }
+
+  if (matches(['edit', 'rewrite', 'update', 'section', 'пренапиши', 'редакт', 'раздел'])) {
+    if (updatedNotes.length) {
+      const sections = Object.entries(analysis.groups)
+        .filter(([, items]) => items.length)
+        .map(([label, items]) => `${label}:\n${items.map((item) => `• ${item.snippet}`).join('\n')}`)
+        .join('\n\n');
+      updatedNotes[0] = {
+        ...updatedNotes[0],
+        content: `🏗️ Организирана версия:\n\n${sections}`,
+      };
+      changed = true;
+      responses.push('Преподредих първата ти бележка с отделни секции.');
+    }
+  }
+
+  if (matches(['checklist', 'tasks', 'todo', 'step', 'steps', 'стъпк', 'списък'])) {
+    if (analysis.count) {
+      const taskSource = analysis.groups.Action.length ? analysis.groups.Action : analysis.groups.General;
+      const finalSource = taskSource.length ? taskSource : analysis.groups.Ideas;
+      const items = finalSource.map((item, index) => `☐ Стъпка ${index + 1}: ${item.snippet}`);
+      const checklistNote = {
+        id: generateId(),
+        content: `Checklist ${new Date().toLocaleDateString()}:\n${items.join('\n')}`,
+        createdAt: new Date().toISOString(),
+      };
+      updatedNotes = [...updatedNotes, checklistNote];
+      changed = true;
+      responses.push('Добавих нова бележка тип checklist със стъпки.');
+    }
+  }
+
+  if (matches(['sort', 'order', 'arrange', 'подреди', 'сортирай'])) {
+    updatedNotes = [...updatedNotes].sort((a, b) =>
+      (a.content || '').localeCompare(b.content || '', 'bg-BG')
+    );
+    changed = true;
+    responses.push('Подредих бележките ти по азбучен ред.');
+  }
+
+  if (changed) {
+    setNotes(updatedNotes);
+  }
+
+  return responses;
+};
+
+const initAssistantPanel = ({ getNotes, setNotes }) => {
   const assistantForm = document.getElementById('assistantForm');
   const assistantInput = document.getElementById('assistantInput');
   const organizeBtn = document.getElementById('assistantOrganizeBtn');
@@ -155,11 +222,15 @@ const initAssistantPanel = (notesProvider) => {
   });
 
   const handlePrompt = (prompt) => {
-    const notes = typeof notesProvider === 'function' ? notesProvider() : [];
+    const notes = getNotes();
     addChatMessage(prompt, 'user');
     const analysis = analyzeNotes(notes);
     const response = generateStructureResponse(prompt, analysis);
-    setTimeout(() => addChatMessage(response, 'bot'), 200);
+    setTimeout(() => {
+      const actionResponses = applyAssistantActions(prompt, notes, setNotes, analysis);
+      const finalResponse = actionResponses.length ? `${response}\n\n${actionResponses.join('\n')}` : response;
+      addChatMessage(finalResponse, 'bot');
+    }, 200);
   };
 
   assistantForm.addEventListener('submit', (event) => {
@@ -279,7 +350,13 @@ const initDashboardPage = () => {
     loadNotes();
   });
 
-  initAssistantPanel(() => getUserNotes(user.id));
+  initAssistantPanel({
+    getNotes: () => getUserNotes(user.id),
+    setNotes: (newNotes) => {
+      saveUserNotes(user.id, newNotes);
+      loadNotes();
+    },
+  });
 };
 
 document.addEventListener('DOMContentLoaded', () => {

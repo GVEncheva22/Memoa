@@ -81,12 +81,12 @@ const initFavourites = () => {
 
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (!title.value.trim() || !tag.value.trim() || !content.value.trim()) return;
+    if (!content.value.trim()) return;
 
     const fav = {
       id: generateId(),
-      title: title.value.trim(),
-      tag: tag.value.trim().toUpperCase(),
+      title: (title.value.trim() || 'Untitled snippet'),
+      tag: (tag.value.trim() || 'Note').toUpperCase(),
       content: content.value.trim(),
       color: color.value,
       createdAt: new Date().toISOString(),

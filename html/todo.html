@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memoa | To-do board</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="dashboard-page">
+  <div class="dashboard">
+    <aside class="sidebar">
+      <div class="sidebar__logo">Memoa</div>
+      <nav>
+        <a href="../html/dashboard.html">Notes</a>
+        <a href="../html/todo.html" class="active">To-do</a>
+        <a href="#">Favourites</a>
+      </nav>
+      <div class="sidebar__account" id="sidebarAccount">My account</div>
+    </aside>
+
+    <section class="workspace">
+      <div class="workspace__header">
+        <h2 class="workspace__title">My to-dos</h2>
+      </div>
+
+      <div class="kanban-wrapper">
+        <form id="kanbanAddForm" class="kanban-add-form">
+          <textarea id="kanbanNewContent" placeholder="Add a new sticky note..." required></textarea>
+          <button class="btn btn--primary" type="submit">Add</button>
+        </form>
+
+        <div class="kanban-board" id="kanbanBoard">
+          <div class="kanban-column" data-stage="todo">
+            <h3>To do</h3>
+            <div class="kanban-dropzone" data-stage="todo"></div>
+          </div>
+          <div class="kanban-column" data-stage="in-progress">
+            <h3>In process</h3>
+            <div class="kanban-dropzone" data-stage="in-progress"></div>
+          </div>
+          <div class="kanban-column" data-stage="done">
+            <h3>Done</h3>
+            <div class="kanban-dropzone" data-stage="done"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="../js/kanban.js"></script>
+</body>
+</html>
+

@@ -342,6 +342,21 @@ const initDashboardPage = () => {
 
   loadNotes();
 
+  const updateChecklistItem = (noteId, lineIndex, checked) => {
+    const notes = getUserNotes(user.id);
+    const note = notes.find((entry) => entry.id === noteId);
+    if (!note) return;
+
+    const { lines } = parseChecklist(note.content);
+    if (!lines[lineIndex]) return;
+
+    const replacement = checked ? lines[lineIndex].replace('☐', '☑') : lines[lineIndex].replace('☑', '☐');
+    lines[lineIndex] = replacement;
+    note.content = lines.join('\n');
+    saveUserNotes(user.id, notes);
+    loadNotes();
+  };
+
   notesGrid.addEventListener('click', (event) => {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
@@ -354,6 +369,16 @@ const initDashboardPage = () => {
     const notes = getUserNotes(user.id).filter((note) => note.id !== noteId);
     saveUserNotes(user.id, notes);
     loadNotes();
+  });
+
+  notesGrid.addEventListener('change', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLInputElement) || target.type !== 'checkbox') return;
+    const card = target.closest('.note-card');
+    if (!card || !card.dataset.noteId) return;
+    const lineIndex = Number(target.dataset.lineIndex);
+    if (Number.isNaN(lineIndex)) return;
+    updateChecklistItem(card.dataset.noteId, lineIndex, target.checked);
   });
 
   const toggleForm = (show) => {

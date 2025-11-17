@@ -429,6 +429,15 @@ button:hover,
   flex-wrap: wrap;
 }
 
+.favourites-form__actions input {
+  flex: 1;
+  min-width: 180px;
+}
+
+.favourites-form__actions select {
+  min-width: 140px;
+}
+
 .favourites-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

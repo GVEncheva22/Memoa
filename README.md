@@ -56,3 +56,9 @@ Open `http://127.0.0.1:5500/index.html` in your browser.
 - Items render as “sticky” gradient cards; click Remove to delete.
 - Data is stored in `localStorage` (`memoaFavourites-<userId>`), so every user
   has their own collection.
+
+## Theme toggle
+
+- Every page includes a small moon/sun button that switches between light and
+  dark palettes. The choice is saved in `localStorage` (`memoaTheme`) so your
+  preference persists across navigation and reloads.

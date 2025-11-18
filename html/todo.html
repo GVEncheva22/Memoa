@@ -9,7 +9,10 @@
 <body class="dashboard-page">
   <div class="dashboard">
     <aside class="sidebar">
-      <div class="sidebar__logo">Memoa</div>
+      <div class="sidebar__top">
+        <div class="sidebar__logo">Memoa</div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☾</button>
+      </div>
       <nav>
         <a href="../html/dashboard.html">Notes</a>
         <a href="../html/todo.html" class="active">To-do</a>
@@ -48,6 +51,7 @@
   </div>
 
   <script type="module" src="../js/kanban.js"></script>
+  <script type="module" src="../js/theme-toggle.js"></script>
 </body>
 </html>
 

@@ -27,9 +27,13 @@
       </div>
 
       <div class="favourites-wrapper">
-        <form id="favouriteForm" class="favourites-form">
+        <form id="favouriteForm" class="favourites-form" enctype="multipart/form-data">
           <input id="favouriteTitle" type="text" placeholder="Title (optional)">
           <textarea id="favouriteContent" rows="3" placeholder="Add a highlight, link or snippet..." required></textarea>
+          <label class="upload-chip">
+            <input id="favouriteAttachment" type="file" accept="image/*">
+            Attach image
+          </label>
           <div class="favourites-form__actions">
             <input id="favouriteTag" type="text" placeholder="Tag (optional)">
             <select id="favouriteColor">

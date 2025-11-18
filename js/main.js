@@ -274,6 +274,23 @@ const parseChecklist = (content) => {
   return { lines, items };
 };
 
+const formatDueDate = (isoString) => {
+  if (!isoString) return '';
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+};
+
+const getDueStatus = (isoString) => {
+  if (!isoString) return 'none';
+  const due = new Date(isoString).getTime();
+  if (Number.isNaN(due)) return 'none';
+  const diff = due - Date.now();
+  if (diff < 0) return 'overdue';
+  if (diff <= 24 * 60 * 60 * 1000) return 'soon';
+  return 'future';
+};
+
 const renderNotes = (notes) => {
   const notesGrid = document.getElementById('notesGrid');
   if (!notesGrid) return;
@@ -288,6 +305,14 @@ const renderNotes = (notes) => {
     const card = document.createElement('article');
     card.className = 'note-card';
     card.dataset.noteId = note.id;
+    const dueStatus = getDueStatus(note.dueDate);
+    if (dueStatus === 'overdue' || dueStatus === 'soon') {
+      card.classList.add(`note-card--${dueStatus}`);
+    }
+    const dueBadge =
+      note.dueDate && dueStatus !== 'none'
+        ? `<div class="note-due note-due--${dueStatus}">${dueStatus === 'overdue' ? 'Overdue' : dueStatus === 'soon' ? 'Due soon' : 'Reminder'} • ${formatDueDate(note.dueDate)}</div>`
+        : '';
 
     const { items } = parseChecklist(note.content);
     if (items.length) {
@@ -304,6 +329,7 @@ const renderNotes = (notes) => {
         <div class="checklist">
           ${itemsMarkup}
         </div>
+        ${dueBadge}
         <div class="note-card__actions">
           <button class="btn btn--secondary" data-id="${note.id}" data-action="delete">Delete</button>
         </div>
@@ -311,6 +337,7 @@ const renderNotes = (notes) => {
     } else {
       card.innerHTML = `
         <textarea readonly>${note.content}</textarea>
+        ${dueBadge}
         <div class="note-card__actions">
           <button class="btn btn--secondary" data-id="${note.id}" data-action="delete">Delete</button>
         </div>
@@ -324,6 +351,7 @@ const initDashboardPage = () => {
   const notesGrid = document.getElementById('notesGrid');
   const noteForm = document.getElementById('noteForm');
   const noteContent = document.getElementById('noteContent');
+  const noteDueDate = document.getElementById('noteDueDate');
   const newNoteBtn = document.getElementById('newNoteBtn');
   const cancelNoteBtn = document.getElementById('cancelNoteBtn');
   const sidebarAccount = document.getElementById('sidebarAccount');
@@ -387,6 +415,9 @@ const initDashboardPage = () => {
       noteContent.focus();
     } else {
       noteContent.value = '';
+      if (noteDueDate) {
+        noteDueDate.value = '';
+      }
     }
   };
 
@@ -400,11 +431,13 @@ const initDashboardPage = () => {
       alert('Please write something first.');
       return;
     }
+    const dueValue = noteDueDate?.value ? new Date(noteDueDate.value).toISOString() : '';
 
     const notes = getUserNotes(user.id);
     const note = {
       id: generateId(),
       content,
+      dueDate: dueValue,
       createdAt: new Date().toISOString(),
     };
 

@@ -49,6 +49,12 @@ Open `http://127.0.0.1:5500/index.html` in your browser.
   or delete when finished.
 - Board data is saved per user in `localStorage` under `memoaBoard-<userId>`.
 
+## Reminders
+
+- When creating a note on `dashboard.html` you can add an optional reminder date.
+- Notes that are overdue or due in the next 24h are highlighted, so you can spot
+  urgent items quickly.
+
 ## Favourites hub
 
 - `html/favourites.html` lets you store highlighted snippets/links with title,

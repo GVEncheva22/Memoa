@@ -42,6 +42,17 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 ::selection {
   background: rgba(118, 159, 255, 0.35);
   color: var(--text-dark);
@@ -145,6 +156,11 @@ body.dashboard-page {
   letter-spacing: -0.02em;
 }
 
+.hero__text {
+  opacity: 0;
+  animation: heroReveal 0.85s ease forwards;
+}
+
 .hero__text p {
   line-height: 1.6;
   max-width: 480px;
@@ -166,6 +182,8 @@ body.dashboard-page {
   box-shadow: 0 25px 60px var(--shadow-color);
   backdrop-filter: blur(18px);
   min-height: 320px;
+  opacity: 0;
+  animation: heroReveal 0.9s ease forwards 0.12s;
 }
 
 button,
@@ -188,8 +206,23 @@ button,
   background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   color: var(--text-light);
   box-shadow: 0 12px 30px rgba(118, 159, 255, 0.35);
+  position: relative;
+  overflow: hidden;
 }
 
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.18);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.btn--primary:hover::after {
+  opacity: 1;
+}
 .btn--secondary {
   background: rgba(255, 255, 255, 0.8);
   color: #6376e0;

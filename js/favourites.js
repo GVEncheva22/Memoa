@@ -46,6 +46,7 @@ const createFavCard = (fav) => `
     <div class="favourite-card__tag">${fav.tag}</div>
     <h4>${fav.title}</h4>
     <p>${fav.content}</p>
+    ${fav.attachment ? `<img class="favourite-card__image" src="${fav.attachment}" alt="${fav.title} attachment">` : ''}
     <div class="favourite-card__actions">
       <button type="button" data-action="delete" data-id="${fav.id}">Remove</button>
     </div>
@@ -78,27 +79,43 @@ const initFavourites = () => {
   const tag = document.getElementById('favouriteTag');
   const content = document.getElementById('favouriteContent');
   const color = document.getElementById('favouriteColor');
+  const attachmentInput = document.getElementById('favouriteAttachment');
 
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
     if (!content.value.trim()) return;
 
-    const fav = {
-      id: generateId(),
-      title: (title.value.trim() || 'Untitled snippet'),
-      tag: (tag.value.trim() || 'Note').toUpperCase(),
-      content: content.value.trim(),
-      color: color.value,
-      createdAt: new Date().toISOString(),
-    };
+    let attachment = '';
+    const file = attachmentInput.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        attachment = reader.result;
+        persistFavourite({ attachment });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      persistFavourite({ attachment });
+    }
 
-    favourites = [fav, ...favourites];
-    saveFavourites(user.id, favourites);
-    title.value = '';
-    tag.value = '';
-    content.value = '';
-    color.value = 'sky';
-    render();
+    function persistFavourite({ attachment }) {
+      const fav = {
+        id: generateId(),
+        title: (title.value.trim() || 'Untitled snippet'),
+        tag: (tag.value.trim() || 'Note').toUpperCase(),
+        content: content.value.trim(),
+        color: color.value,
+        attachment,
+        createdAt: new Date().toISOString(),
+      };
+
+      favourites = [fav, ...favourites];
+      saveFavourites(user.id, favourites);
+      form.reset();
+      color.value = 'sky';
+      render();
+    }
+
   });
 
   grid?.addEventListener('click', (event) => {

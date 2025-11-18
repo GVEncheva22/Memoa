@@ -880,15 +880,22 @@ button:hover,
 
 .assistant-form {
   display: flex;
+  align-items: stretch;
   gap: 0.75rem;
+  width: 100%;
 }
 
 .assistant-form input {
   flex: 1;
+  min-width: 0;
   border-radius: 999px;
   border: 1px solid rgba(31, 31, 31, 0.1);
   padding: 0.85rem 1.2rem;
   font-size: 1rem;
+}
+
+.assistant-form button {
+  flex-shrink: 0;
 }
 
 .assistant-form input:focus {

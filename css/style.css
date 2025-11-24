@@ -90,6 +90,38 @@ body.dashboard-page {
   transition: all 0.3s ease;
 }
 
+/* Dark theme overrides for header and nav pills */
+:root[data-theme='dark'] .landing__header {
+  background: rgba(18, 22, 34, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+:root[data-theme='dark'] .landing__nav a {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-light);
+}
+
+:root:not([data-theme='dark']) .landing__nav a {
+  color: var(--text-dark);
+}
+
+/* Ensure header uses theme variables for stronger dark-mode appearance */
+.landing__header {
+  color: var(--text-dark);
+}
+
+:root[data-theme='dark'] .landing__header {
+  color: var(--text-light);
+  background: linear-gradient(180deg, rgba(30,34,52,0.7), rgba(18,22,34,0.7));
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.landing__nav a {
+  /* make pills use the card color when available */
+  background-clip: padding-box;
+}
+
 .theme-toggle {
   width: 42px;
   height: 42px;

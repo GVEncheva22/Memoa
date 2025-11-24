@@ -61,6 +61,7 @@ body {
 body.landing,
 body.hello-page {
   background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-dark) 100%);
+  padding-top: 5.5rem;
 }
 
 body.auth-page {
@@ -72,11 +73,21 @@ body.dashboard-page {
 }
 
 .landing__header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 4rem;
+  padding: 1.25rem 4rem;
   font-family: 'Inter', sans-serif;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
 
 .theme-toggle {
@@ -116,28 +127,39 @@ body.dashboard-page {
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1.6rem;
+  font-weight: 700;
   color: #6c7dd6;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
 }
 
 .landing__nav {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
+  align-items: center;
 }
 
 .landing__nav a {
   text-decoration: none;
-  color: inherit;
+  color: var(--text-dark);
   font-weight: 600;
-  opacity: 0.9;
-  transition: opacity 0.2s ease;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .landing__nav a:hover {
-  opacity: 1;
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(108, 125, 214, 0.2);
 }
 
 .hero {
@@ -145,7 +167,7 @@ body.dashboard-page {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   align-items: center;
   gap: 3rem;
-  padding: 2rem 4rem 4rem;
+  padding: 4rem 4rem 4rem;
 }
 
 .hero__text h1 {

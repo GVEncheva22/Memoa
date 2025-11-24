@@ -1,3 +1,35 @@
+/* Improve text visibility for dark mode */
+.hero__heading {
+  color: #6174e0;
+}
+
+:root[data-theme='dark'] .hero__heading {
+  color: #bfcaff;
+}
+
+.hero__desc {
+  color: rgba(31, 31, 31, 0.85);
+}
+
+:root[data-theme='dark'] .hero__desc {
+  color: #e0e6ff;
+}
+
+.hero__small {
+  color: #444;
+}
+
+:root[data-theme='dark'] .hero__small {
+  color: #bfcaff;
+}
+
+.hero__card-text {
+  color: #222;
+}
+
+:root[data-theme='dark'] .hero__card-text {
+  color: #e0e6ff;
+}
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
@@ -591,6 +623,7 @@ button:hover,
   font-size: 1rem;
   font-family: inherit;
 }
+}
 
 .favourites-form__actions {
   display: flex;
@@ -666,6 +699,28 @@ button:hover,
   flex-direction: column;
   gap: 0.75rem;
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+  color: var(--text-dark);
+}
+
+:root[data-theme='dark'] .favourite-card {
+  color: #e0e6ff;
+}
+
+.favourite-card h4 {
+  color: #222;
+}
+
+:root[data-theme='dark'] .favourite-card h4 {
+  color: #e0e6ff;
+}
+
+.favourite-card__tag {
+  color: #444;
+}
+
+:root[data-theme='dark'] .favourite-card__tag {
+  color: #bfcaff;
+}
 }
 
 .favourite-card h4 {
@@ -694,18 +749,42 @@ button:hover,
 
 .favourite-card.sky {
   background: linear-gradient(135deg, #dbe6ff, #aecbff);
+  color: #222;
+}
+:root[data-theme='dark'] .favourite-card.sky {
+  background: linear-gradient(135deg, #3a4666, #2a3450);
+  color: #e0e6ff;
+}
 }
 
 .favourite-card.lavender {
   background: linear-gradient(135deg, #e9dbff, #c5b0ff);
+  color: #222;
+}
+:root[data-theme='dark'] .favourite-card.lavender {
+  background: linear-gradient(135deg, #4a4066, #2e2540);
+  color: #e0e6ff;
+}
 }
 
 .favourite-card.peach {
   background: linear-gradient(135deg, #ffe3d7, #ffc3a9);
+  color: #222;
+}
+:root[data-theme='dark'] .favourite-card.peach {
+  background: linear-gradient(135deg, #664a40, #402a25);
+  color: #e0e6ff;
+}
 }
 
 .favourite-card.mint {
   background: linear-gradient(135deg, #dff9e5, #b6f0cc);
+  color: #222;
+}
+:root[data-theme='dark'] .favourite-card.mint {
+  background: linear-gradient(135deg, #40664a, #25402a);
+  color: #e0e6ff;
+}
 }
 
 .workspace__header {
@@ -718,6 +797,11 @@ button:hover,
   font-family: 'Libre Baskerville', serif;
   font-size: 2.5rem;
   color: #6a7ad8;
+}
+
+:root[data-theme='dark'] .workspace__title {
+  color: #bfcaff;
+}
 }
 
 .notes-grid {

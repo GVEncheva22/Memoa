@@ -1,5 +1,7 @@
 # Memoa
 
+![logo](../Memoa/assets/Memoa.png)
+
 Prototype of the Memoa UI. The current demo is 100% front-end: registrations,
 logins, and notes are stored in `localStorage`, so you only need a static file
 server to run it.
@@ -18,7 +20,6 @@ through `http://localhost` (the pages must not be opened via `file://`).
 
 #### Option B – Python http.server
 ```bash
-cd /Users/gabriela/Documents/Memoa/html
 python3 -m http.server 5500
 ```
 Open `http://127.0.0.1:5500/index.html` in your browser.

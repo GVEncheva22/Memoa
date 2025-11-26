@@ -678,6 +678,10 @@ button:hover,
   color: #6174e0;
 }
 
+#favouriteAttachment {
+  display: none;
+}
+
 .favourite-card__image {
   width: 100%;
   border-radius: 14px;

@@ -85,20 +85,18 @@ const initFavourites = () => {
     event.preventDefault();
     if (!content.value.trim()) return;
 
-    let attachment = '';
-    const file = attachmentInput.files?.[0];
+    const file = attachmentInput?.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        attachment = reader.result;
-        persistFavourite({ attachment });
+        persistFavourite(reader.result);
       };
       reader.readAsDataURL(file);
     } else {
-      persistFavourite({ attachment });
+      persistFavourite('');
     }
 
-    function persistFavourite({ attachment }) {
+    function persistFavourite(attachment) {
       const fav = {
         id: generateId(),
         title: (title.value.trim() || 'Untitled snippet'),
@@ -113,9 +111,9 @@ const initFavourites = () => {
       saveFavourites(user.id, favourites);
       form.reset();
       color.value = 'sky';
+      if (attachmentInput) attachmentInput.value = '';
       render();
     }
-
   });
 
   grid?.addEventListener('click', (event) => {

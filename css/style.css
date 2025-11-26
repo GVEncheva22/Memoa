@@ -669,8 +669,16 @@ button:hover,
   transition: border-color 0.2s ease;
 }
 
-.upload-chip input {
-  display: none;
+
+/* Keep the file input reachable but visually hidden.
+   Avoid `display:none` which can interact unexpectedly with labels
+   and programmatic clicks in some browsers. */
+#favouriteAttachment {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .upload-chip:hover {
@@ -678,15 +686,51 @@ button:hover,
   color: #6174e0;
 }
 
-#favouriteAttachment {
-  display: none;
+/* removed display:none for #favouriteAttachment above */
+
+.favourite-card__media {
+  flex: 0 0 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .favourite-card__image {
+  width: 140px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: contain;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.02));
+}
+
+.favourite-card__image-wrapper {
+  display: flex;
+  justify-content: flex-start; /* left-align image */
+  margin-top: 0.5rem;
+}
+
+.favourite-card__image-wrapper .favourite-card__image {
+  width: 140px;
+  height: auto;
+}
+
+/* Preview shown next to the upload chip */
+.upload-preview {
+  margin-top: 0.75rem;
   width: 100%;
-  border-radius: 14px;
-  max-height: 160px;
-  object-fit: cover;
+  max-width: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(31,31,31,0.06);
+  display: none; /* shown when image is selected */
+}
+.upload-preview img {
+  display: block;
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  background: #f6f7fb;
 }
 
 .favourites-grid {
@@ -700,8 +744,8 @@ button:hover,
   padding: 1.25rem;
   min-height: 160px;
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  flex-direction: row;
+  gap: 1rem;
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
   color: var(--text-dark);
 }
@@ -789,6 +833,19 @@ button:hover,
   background: linear-gradient(135deg, #40664a, #25402a);
   color: #e0e6ff;
 }
+}
+
+@media (max-width: 600px) {
+  .favourite-card {
+    flex-direction: column;
+  }
+  .favourite-card__media {
+    flex: 0 0 auto;
+  }
+  .favourite-card__image {
+    width: 100%;
+    height: 160px;
+  }
 }
 
 .workspace__header {

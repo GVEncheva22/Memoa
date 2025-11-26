@@ -31,10 +31,11 @@
         <form id="favouriteForm" class="favourites-form" enctype="multipart/form-data">
           <input id="favouriteTitle" type="text" placeholder="Title (optional)">
           <textarea id="favouriteContent" rows="3" placeholder="Add a highlight, link or snippet..." required></textarea>
-          <label class="upload-chip">
-            <input id="favouriteAttachment" type="file" accept="image/*">
-            Attach image
-          </label>
+          <label class="upload-chip" for="favouriteAttachment">Attach image</label>
+          <input id="favouriteAttachment" type="file" accept="image/*">
+          <div class="upload-preview" id="favouritePreviewWrapper" aria-hidden="true">
+            <img id="favouritePreview" alt="Selected image preview" src="" />
+          </div>
           <div class="favourites-form__actions">
             <input id="favouriteTag" type="text" placeholder="Tag (optional)">
             <select id="favouriteColor">

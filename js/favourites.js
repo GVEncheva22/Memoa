@@ -43,12 +43,18 @@ const saveFavourites = (userId, list) => {
 
 const createFavCard = (fav) => `
   <article class="favourite-card ${fav.color}">
-    <div class="favourite-card__tag">${fav.tag}</div>
-    <h4>${fav.title}</h4>
-    <p>${fav.content}</p>
-    ${fav.attachment ? `<img class="favourite-card__image" src="${fav.attachment}" alt="${fav.title} attachment">` : ''}
-    <div class="favourite-card__actions">
-      <button type="button" data-action="delete" data-id="${fav.id}">Remove</button>
+    <div class="favourite-card__body">
+      <div class="favourite-card__tag">${fav.tag}</div>
+      <h4>${fav.title}</h4>
+      <p>${fav.content}</p>
+      ${fav.attachment ? `
+        <div class="favourite-card__image-wrapper">
+          <img class="favourite-card__image" src="${fav.attachment}" alt="${fav.title} attachment">
+        </div>
+      ` : ''}
+      <div class="favourite-card__actions">
+        <button type="button" data-action="delete" data-id="${fav.id}">Remove</button>
+      </div>
     </div>
   </article>
 `;
@@ -80,7 +86,30 @@ const initFavourites = () => {
   const content = document.getElementById('favouriteContent');
   const color = document.getElementById('favouriteColor');
   const attachmentInput = document.getElementById('favouriteAttachment');
+  const previewWrapper = document.getElementById('favouritePreviewWrapper');
+  const previewImg = document.getElementById('favouritePreview');
 
+  // Show live preview when a file is selected
+  if (attachmentInput && previewWrapper && previewImg) {
+    attachmentInput.addEventListener('change', () => {
+      const file = attachmentInput.files?.[0];
+      if (!file) {
+        previewImg.src = '';
+        previewWrapper.style.display = 'none';
+        previewWrapper.setAttribute('aria-hidden', 'true');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        previewImg.src = reader.result;
+        previewWrapper.style.display = 'block';
+        previewWrapper.setAttribute('aria-hidden', 'false');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
     if (!content.value.trim()) return;
@@ -112,6 +141,13 @@ const initFavourites = () => {
       form.reset();
       color.value = 'sky';
       if (attachmentInput) attachmentInput.value = '';
+      if (previewImg) {
+        previewImg.src = '';
+        if (previewWrapper) {
+          previewWrapper.style.display = 'none';
+          previewWrapper.setAttribute('aria-hidden', 'true');
+        }
+      }
       render();
     }
   });

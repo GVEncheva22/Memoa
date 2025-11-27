@@ -503,6 +503,157 @@ button:hover,
   flex: 1 1 auto;
 }
 
+.account-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.account-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.account-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.account-modal__card {
+  position: relative;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease forwards;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+:root[data-theme='dark'] .account-modal__card {
+  background: #222741;
+  color: #e0e6ff;
+}
+
+.account-modal__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.account-modal__image {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffe3d7;
+  border-radius: 50%;
+}
+
+:root[data-theme='dark'] .account-modal__image {
+  background: rgba(255, 107, 53, 0.1);
+}
+
+.account-modal__image svg {
+  width: 32px;
+  height: 32px;
+  color: #ff6b35;
+}
+
+.account-modal__content {
+  text-align: center;
+}
+
+.account-modal__title {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.75rem;
+}
+
+:root[data-theme='dark'] .account-modal__title {
+  color: #e0e6ff;
+}
+
+.account-modal__message {
+  font-size: 0.95rem;
+  color: rgba(31, 31, 31, 0.75);
+  line-height: 1.5;
+  margin: 0;
+}
+
+:root[data-theme='dark'] .account-modal__message {
+  color: #bfcaff;
+}
+
+.account-modal__actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-direction: column;
+}
+
+.account-modal__btn {
+  padding: 0.85rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.account-modal__btn--deactivate {
+  background: #ff6b35;
+  color: white;
+}
+
+.account-modal__btn--deactivate:hover {
+  background: #e55a24;
+  transform: translateY(-1px);
+}
+
+.account-modal__btn--cancel {
+  background: rgba(31, 31, 31, 0.1);
+  color: #222;
+}
+
+:root[data-theme='dark'] .account-modal__btn--cancel {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e0e6ff;
+}
+
+.account-modal__btn--cancel:hover {
+  background: rgba(31, 31, 31, 0.15);
+}
+
+:root[data-theme='dark'] .account-modal__btn--cancel:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 .workspace {
   padding: 3rem;
   background: var(--panel);
@@ -649,7 +800,6 @@ button:hover,
   font-size: 1rem;
   font-family: inherit;
 }
-}
 
 .favourites-form__actions {
   display: flex;
@@ -795,7 +945,6 @@ button:hover,
 :root[data-theme='dark'] .favourite-card__tag {
   color: #bfcaff;
 }
-}
 
 .favourite-card h4 {
   margin: 0;
@@ -829,7 +978,6 @@ button:hover,
   background: linear-gradient(135deg, #3a4666, #2a3450);
   color: #e0e6ff;
 }
-}
 
 .favourite-card.lavender {
   background: linear-gradient(135deg, #e9dbff, #c5b0ff);
@@ -839,7 +987,7 @@ button:hover,
   background: linear-gradient(135deg, #4a4066, #2e2540);
   color: #e0e6ff;
 }
-}
+
 
 .favourite-card.peach {
   background: linear-gradient(135deg, #ffe3d7, #ffc3a9);
@@ -849,7 +997,7 @@ button:hover,
   background: linear-gradient(135deg, #664a40, #402a25);
   color: #e0e6ff;
 }
-}
+
 
 .favourite-card.mint {
   background: linear-gradient(135deg, #dff9e5, #b6f0cc);
@@ -859,7 +1007,7 @@ button:hover,
   background: linear-gradient(135deg, #40664a, #25402a);
   color: #e0e6ff;
 }
-}
+
 
 @media (max-width: 600px) {
   .favourite-card {
@@ -888,7 +1036,6 @@ button:hover,
 
 :root[data-theme='dark'] .workspace__title {
   color: #bfcaff;
-}
 }
 
 .notes-grid {

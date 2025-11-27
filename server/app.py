@@ -54,7 +54,7 @@ def row_to_user(row: Row) -> User:
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 init_db()
 
 
@@ -162,6 +162,49 @@ def delete_note(note_id: int):
   return jsonify({"status": "deleted"})
 
 
+@app.post("/api/account/deactivate")
+def deactivate_account():
+  try:
+    data = request.get_json(force=True)
+    user_id = data.get("userId")
+    password = data.get("password", "")
+
+    print(f"Deactivate request - userId: {user_id}, password provided: {bool(password)}")
+
+    if not user_id or not password:
+      return jsonify({"message": "userId and password are required."}), 400
+
+    # Ensure user_id is an integer
+    try:
+      user_id = int(user_id)
+    except (ValueError, TypeError):
+      return jsonify({"message": "Invalid user ID format."}), 400
+
+    with get_connection() as conn:
+      user_row = conn.execute("SELECT id, password FROM users WHERE id = ?", (user_id,)).fetchone()
+
+    print(f"User found: {user_row is not None}")
+
+    if not user_row:
+      return jsonify({"message": "User not found."}), 404
+
+    if not check_password_hash(user_row["password"], password):
+      print(f"Password check failed for user {user_id}")
+      return jsonify({"message": "Invalid password."}), 401
+
+    with get_connection() as conn:
+      # Delete all notes associated with the user
+      conn.execute("DELETE FROM notes WHERE user_id = ?", (user_id,))
+      # Delete the user account
+      conn.execute("DELETE FROM users WHERE id = ?", (user_id,))
+      conn.commit()
+
+    print(f"Account {user_id} successfully deactivated")
+    return jsonify({"status": "deactivated", "message": "Account successfully deactivated."}), 200
+  except Exception as e:
+    print(f"Deactivation error: {str(e)}")
+    return jsonify({"message": f"Server error: {str(e)}"}), 500
+
+
 if __name__ == "__main__":
   app.run(debug=True)
-

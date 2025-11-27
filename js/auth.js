@@ -36,7 +36,7 @@ const initRegisterForm = () => {
   const registerForm = document.getElementById('registerForm');
   if (!registerForm) return;
 
-  registerForm.addEventListener('submit', (event) => {
+  registerForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(registerForm);
@@ -49,24 +49,29 @@ const initRegisterForm = () => {
       return;
     }
 
-    const users = getUsers();
-    const emailExists = users.some((user) => user.email === email);
-    if (emailExists) {
-      alert('This email is already registered. Try logging in.');
-      return;
+    try {
+      const response = await fetch('http://localhost:5000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        alert(result.message || 'Registration failed.');
+        return;
+      }
+
+      // Save user session from backend response
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(result.user));
+      window.location.href = './hello.html';
+    } catch (err) {
+      console.error('Registration error:', err);
+      alert('Registration failed. Make sure the server is running at http://localhost:5000');
     }
-
-    const newUser = {
-      id: generateId(),
-      name,
-      email,
-      password,
-      createdAt: new Date().toISOString(),
-    };
-
-    users.push(newUser);
-    saveUsers(users);
-    createSessionFromUser(newUser);
   });
 };
 
@@ -74,7 +79,7 @@ const initLoginForm = () => {
   const loginForm = document.getElementById('loginForm');
   if (!loginForm) return;
 
-  loginForm.addEventListener('submit', (event) => {
+  loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(loginForm);
@@ -86,15 +91,29 @@ const initLoginForm = () => {
       return;
     }
 
-    const users = getUsers();
-    const user = users.find((entry) => entry.email === email && entry.password === password);
+    try {
+      const response = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!user) {
-      alert('Invalid email or password. Try again.');
-      return;
+      const result = await response.json();
+
+      if (!response.ok) {
+        alert(result.message || 'Invalid email or password. Try again.');
+        return;
+      }
+
+      // Save user session from backend response
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(result.user));
+      window.location.href = './hello.html';
+    } catch (err) {
+      console.error('Login error:', err);
+      alert('Login failed. Make sure the server is running at http://localhost:5000');
     }
-
-    createSessionFromUser(user);
   });
 };
 

@@ -471,10 +471,36 @@ button:hover,
   opacity: 1;
 }
 
-.sidebar__account {
+.sidebar__account-btn {
   margin-top: auto;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e9ecff;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
   font-size: 0.9rem;
-  opacity: 0.8;
+  font-weight: 500;
+}
+
+.sidebar__account-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.sidebar__account-icon {
+  flex: 0 0 20px;
+  color: currentColor;
+}
+
+.sidebar__account-label {
+  flex: 1 1 auto;
 }
 
 .workspace {

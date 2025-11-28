@@ -193,9 +193,7 @@ def deactivate_account():
       return jsonify({"message": "Invalid password."}), 401
 
     with get_connection() as conn:
-      # Delete all notes associated with the user
       conn.execute("DELETE FROM notes WHERE user_id = ?", (user_id,))
-      # Delete the user account
       conn.execute("DELETE FROM users WHERE id = ?", (user_id,))
       conn.commit()
 

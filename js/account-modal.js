@@ -121,6 +121,32 @@ const initAccountModal = () => {
       }
     });
   }
+  
+  // Handle logout (clears local session and calls backend endpoint)
+  const logoutBtn = document.getElementById('sidebarLogout');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        logoutBtn.disabled = true;
+        logoutBtn.textContent = 'Logging out...';
+
+        // Call backend logout endpoint (no-op on server for stateless auth)
+        await fetch('http://localhost:5000/api/logout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        // Clear client session and redirect to login
+        localStorage.removeItem('memoaUser');
+        window.location.href = './login.html';
+      } catch (err) {
+        console.error('Logout error:', err);
+        alert('Could not log out. Try again.');
+        logoutBtn.disabled = false;
+        logoutBtn.textContent = 'Logout';
+      }
+    });
+  }
 };
 
 // Initialize when DOM is ready

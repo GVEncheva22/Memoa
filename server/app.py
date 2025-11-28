@@ -204,5 +204,12 @@ def deactivate_account():
     return jsonify({"message": f"Server error: {str(e)}"}), 500
 
 
+@app.post("/api/logout")
+def logout():
+  # Stateless app: logout is handled client-side by clearing stored session.
+  # Provide an endpoint so clients can call it and receive a consistent response.
+  return jsonify({"status": "ok", "message": "Logged out."})
+
+
 if __name__ == "__main__":
   app.run(host="0.0.0.0", port=5000, debug=True)

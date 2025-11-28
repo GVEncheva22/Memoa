@@ -49,6 +49,20 @@ const initRegisterForm = () => {
       return;
     }
 
+    // Client-side password rules: minimum 8 characters and at least one special character
+    try {
+      const passwordStr = String(password);
+      const specialCharRegex = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>\/?`~]/;
+      if (passwordStr.length < 8 || !specialCharRegex.test(passwordStr)) {
+        alert('Password must be at least 8 characters and include at least one special character (e.g. !@#$%^&*).');
+        return;
+      }
+    } catch (err) {
+      console.error('Password validation error', err);
+      alert('Invalid password.');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/api/register', {
         method: 'POST',

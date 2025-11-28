@@ -25,8 +25,9 @@
         </label>
         <label for="registerPassword">
           Password
-          <input id="registerPassword" name="password" type="password" placeholder="••••••••" required>
+          <input id="registerPassword" name="password" type="password" placeholder="••••••••" required minlength="8" pattern="(?=.*[!@#$%^&*]).{8,}" title="Minimum 8 characters and at least one special character (e.g. !@#$%^&*)">
         </label>
+        <small class="input-hint">Minimum 8 characters and at least one special character (e.g. !@#$%^&*)</small>
         <button type="submit" class="btn btn--primary">Sign up</button>
       </form>
 
